@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HomeIQ for Movers — Quote a move in 10 minutes</title>
+<meta name="description" content="AI-powered moving surveys for local & regional movers. Photograph each room, get an itemized inventory and a branded quote PDF in about ten minutes. Free 14-day trial." />
+<meta property="og:title" content="HomeIQ for Movers — Quote a move in 10 minutes" />
+<meta property="og:description" content="Your estimator walks the house, snaps each room, and AI builds the inventory and a branded quote — before they leave the driveway." />
+<meta property="og:type" content="website" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #080f1a;
+    --surface: #0c1525;
+    --card: rgba(255,255,255,0.042);
+    --card-hi: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.08);
+    --gold: #f0a832;
+    --gold-2: #f7c75a;
+    --gold-bg: rgba(240,168,50,0.1);
+    --gold-border: rgba(240,168,50,0.35);
+    --text: #ddd8cf;
+    --muted: #8a8078;
+    --dim: #2e2922;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; line-height: 1.1; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+  .gold { color: var(--gold); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px;
+    padding: 13px 22px; border-radius: 10px; border: none; transition: transform .15s, box-shadow .15s;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #f7c75a 0%, #f0a832 45%, #d98b1a 100%);
+    color: #16110a; box-shadow: 0 8px 30px rgba(240,168,50,0.28);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 38px rgba(240,168,50,0.4); }
+  .btn-ghost { background: transparent; color: var(--gold); border: 1px solid var(--gold-border); }
+  .btn-ghost:hover { background: var(--gold-bg); }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(8,15,26,0.82); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-in { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: 'Syne'; font-weight: 800; font-size: 18px; }
+  .brand .mark { width: 38px; height: 38px; border-radius: 9px; }
+  .brand small { display: block; font-size: 8px; letter-spacing: 0.16em; color: var(--muted); font-weight: 700; margin-top: 1px; }
+  .nav-links { display: flex; align-items: center; gap: 28px; }
+  .nav-links a { color: var(--muted); font-weight: 600; font-size: 14px; transition: color .15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { padding: 9px 16px; font-size: 13px; }
+  .menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
+
+  /* Hero */
+  header { position: relative; padding: 92px 0 70px; overflow: hidden; }
+  .glow { position: absolute; inset: 0; background:
+      radial-gradient(60% 50% at 70% 0%, rgba(240,168,50,0.16), transparent 70%),
+      radial-gradient(50% 40% at 10% 20%, rgba(45,212,191,0.06), transparent 70%);
+    pointer-events: none; }
+  .hero { position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px; border-radius: 30px;
+    background: var(--gold-bg); border: 1px solid var(--gold-border); color: var(--gold-2);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 22px;
+  }
+  .hero h1 { font-size: clamp(34px, 5vw, 56px); font-weight: 800; }
+  .hero h1 em { font-style: normal; background: linear-gradient(120deg, #f7c75a, #f0a832); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p.sub { font-size: 18px; color: var(--muted); margin: 20px 0 30px; max-width: 520px; }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-note { margin-top: 16px; font-size: 13px; color: var(--muted); }
+  .hero-note b { color: var(--text); }
+
+  /* Phone mockup */
+  .mock {
+    position: relative; justify-self: center;
+    width: 300px; border-radius: 30px; padding: 12px;
+    background: linear-gradient(160deg, #1a2740, #0a1220);
+    border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .mock-screen { background: var(--surface); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); }
+  .mock-hd { display: flex; align-items: center; gap: 8px; padding: 13px 15px; border-bottom: 1px solid var(--border); }
+  .mock-hd .dot { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg,#f0a832,#c97a00); }
+  .mock-hd b { font-family:'Syne'; font-size: 13px; }
+  .mock-body { padding: 15px; }
+  .mock-body .lbl { font-size: 9px; letter-spacing: 0.14em; color: var(--muted); font-weight: 700; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: var(--card); margin-top: 9px; border: 1px solid var(--border); }
+  .row .ic { font-size: 18px; }
+  .row .t { font-size: 12.5px; font-weight: 600; }
+  .row .s { font-size: 10.5px; color: var(--muted); }
+  .row .v { margin-left: auto; font-size: 11px; font-weight: 700; color: var(--gold); }
+  .mock-total { display: flex; justify-content: space-between; align-items: center; margin-top: 13px; padding: 12px; border-radius: 11px; background: var(--gold-bg); border: 1px solid var(--gold-border); }
+  .mock-total .t { font-size: 12px; color: var(--text); font-weight: 600; }
+  .mock-total .n { font-family: 'Syne'; font-weight: 800; font-size: 20px; color: var(--gold); }
+  .float-badge {
+    position: absolute; right: -18px; top: 42px; background: #0c1525; border: 1px solid var(--gold-border);
+    border-radius: 12px; padding: 9px 13px; box-shadow: 0 10px 30px rgba(0,0,0,0.45); font-size: 11px;
+  }
+  .float-badge b { color: var(--gold); font-family: 'Syne'; display: block; font-size: 15px; }
+
+  /* Section shells */
+  section { padding: 74px 0; }
+  .eyebrow { color: var(--gold); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sec-head { text-align: center; max-width: 640px; margin: 0 auto 46px; }
+  .sec-head h2 { font-size: clamp(28px, 3.6vw, 40px); font-weight: 800; margin: 12px 0 14px; }
+  .sec-head p { color: var(--muted); font-size: 17px; }
+
+  /* Problem strip */
+  .strip { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; text-align: center; }
+  .stat .big { font-family:'Syne'; font-weight: 800; font-size: 40px; color: var(--gold); }
+  .stat .cap { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+  /* Features */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feat { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 26px; transition: border-color .2s, transform .2s, background .2s; }
+  .feat:hover { border-color: var(--gold-border); background: var(--card-hi); transform: translateY(-3px); }
+  .feat .ic { width: 46px; height: 46px; border-radius: 12px; background: var(--gold-bg); border: 1px solid var(--gold-border); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+  .feat h3 { font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+  .feat p { color: var(--muted); font-size: 14.5px; }
+
+  /* How it works */
+  .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; counter-reset: s; }
+  .step { position: relative; padding: 28px; border-radius: 16px; background: var(--card); border: 1px solid var(--border); }
+  .step::before { counter-increment: s; content: counter(s); font-family:'Syne'; font-weight: 800; font-size: 15px; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#f7c75a,#f0a832); color:#16110a; display:flex; align-items:center; justify-content:center; margin-bottom: 16px; }
+  .step h3 { font-size: 18px; margin-bottom: 7px; }
+  .step p { color: var(--muted); font-size: 14.5px; }
+
+  /* Pricing */
+  .toggle { display: flex; justify-content: center; gap: 6px; margin-bottom: 30px; }
+  .toggle button { padding: 9px 18px; border-radius: 9px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family:'Syne'; font-weight: 700; font-size: 13px; cursor: pointer; }
+  .toggle button.on { background: var(--gold-bg); border-color: var(--gold-border); color: var(--gold); }
+  .plans { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; align-items: start; }
+  .plan { position: relative; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 28px; }
+  .plan.pop { border-color: var(--gold-border); background: linear-gradient(180deg, rgba(240,168,50,0.07), var(--card)); box-shadow: 0 20px 60px rgba(240,168,50,0.1); }
+  .plan .tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,#f7c75a,#f0a832); color:#16110a; font-family:'Syne'; font-weight: 800; font-size: 11px; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 20px; }
+  .plan h3 { font-size: 22px; }
+  .plan .blurb { color: var(--muted); font-size: 13.5px; min-height: 40px; margin-top: 4px; }
+  .plan .price { margin: 14px 0 6px; }
+  .plan .price .amt { font-family:'Syne'; font-weight: 800; font-size: 42px; color: var(--gold); }
+  .plan .price .per { color: var(--muted); font-size: 14px; }
+  .plan .save { font-size: 12px; color: #2dd4bf; height: 16px; }
+  .plan ul { list-style: none; margin: 18px 0 22px; display: grid; gap: 10px; }
+  .plan li { font-size: 14px; display: flex; gap: 10px; align-items: flex-start; }
+  .plan li .ck { color: var(--gold); font-weight: 800; }
+  .plan .btn { width: 100%; justify-content: center; }
+  .plan.pop .btn { }
+  .plan:not(.pop) .btn { background: transparent; color: var(--gold); border: 1px solid var(--gold-border); box-shadow: none; }
+  .price-foot { text-align: center; color: var(--muted); font-size: 13px; margin-top: 24px; }
+
+  /* CTA band */
+  .band { background: linear-gradient(120deg, rgba(240,168,50,0.13), rgba(45,212,191,0.06)); border: 1px solid var(--gold-border); border-radius: 24px; padding: 52px; text-align: center; }
+  .band h2 { font-size: clamp(26px, 3.4vw, 38px); font-weight: 800; }
+  .band p { color: var(--muted); font-size: 17px; margin: 12px auto 26px; max-width: 520px; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 40px 0; margin-top: 20px; }
+  .foot { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .foot .links { display: flex; gap: 22px; flex-wrap: wrap; }
+  .foot a { color: var(--muted); font-size: 13.5px; }
+  .foot a:hover { color: var(--text); }
+  .foot .cr { color: var(--dim); font-size: 13px; }
+
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; }
+    .mock { order: -1; }
+    .grid, .steps, .plans, .stats { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .menu-btn { display: block; }
+    .nav-links.open { display: flex; position: absolute; top: 66px; left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 22px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .plan.pop { order: -1; }
+    .band { padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="#" class="brand">
+      <img src="icon.png" alt="HomeIQ for Movers" class="mark" />
+      <span>HomeIQ for Movers<small>QUOTE MOVES IN MINUTES</small></span>
+    </a>
+    <div class="nav-links" id="navlinks">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:sales@homeiqmovers.com">Contact</a>
+      <a href="#pricing" class="btn btn-primary nav-cta">Start free trial</a>
+    </div>
+    <button class="menu-btn" id="menubtn" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<header>
+  <div class="glow"></div>
+  <div class="wrap hero">
+    <div>
+      <span class="pill">🚚 Built for local &amp; regional movers</span>
+      <h1>Win more moves.<br /><em>Quote in minutes,</em> not hours.</h1>
+      <p class="sub">Your estimator walks the home, photographs each room, and AI builds the itemized inventory and a <b style="color:var(--text)">branded quote PDF</b> — before they leave the driveway.</p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn btn-primary">Start your free trial →</a>
+        <a href="mailto:sales@homeiqmovers.com?subject=HomeIQ%20for%20Movers%20demo" class="btn btn-ghost">Book a live demo</a>
+      </div>
+      <p class="hero-note"><b>14-day free trial.</b> No credit card. Set up the same day.</p>
+    </div>
+
+    <div class="mock">
+      <div class="mock-screen">
+        <div class="mock-hd"><span class="dot"></span><b>Johnson — 3BR move</b></div>
+        <div class="mock-body">
+          <span class="lbl">AI CAPTURED · LIVING ROOM</span>
+          <div class="row"><span class="ic">🛋️</span><div><div class="t">Sectional sofa</div><div class="s">Large · ~65 cu ft</div></div><span class="v">✓ added</span></div>
+          <div class="row"><span class="ic">📺</span><div><div class="t">75" TV + stand</div><div class="s">Fragile · ~18 cu ft</div></div><span class="v">✓ added</span></div>
+          <div class="row"><span class="ic">🪑</span><div><div class="t">Armchairs (2)</div><div class="s">Medium · ~24 cu ft</div></div><span class="v">✓ added</span></div>
+          <div class="mock-total"><span class="t">Estimated move</span><span class="n">$2,480</span></div>
+        </div>
+      </div>
+      <div class="float-badge">Survey time<b>~10 min</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <section class="wrap" style="padding:52px 22px;">
+    <div class="stats">
+      <div class="stat"><div class="big">30–45 min</div><div class="cap">Typical manual survey time you're spending today</div></div>
+      <div class="stat"><div class="big">~10 min</div><div class="cap">With AI photo capture &amp; instant quotes</div></div>
+      <div class="stat"><div class="big">Quote first</div><div class="cap">The mover who quotes first usually wins the job</div></div>
+    </div>
+  </section>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">What your crew gets</span>
+      <h2>Everything to survey and quote a move — from one phone</h2>
+      <p>We're not your dispatch or CRM. We're the fastest path from "walk the house" to a signed estimate.</p>
+    </div>
+    <div class="grid">
+      <div class="feat"><div class="ic">📷</div><h3>AI room scan</h3><p>Photograph a room and get an itemized list with categories and cube estimates. Or just describe it in plain English — the AI handles the rest.</p></div>
+      <div class="feat"><div class="ic">📄</div><h3>Branded quote in one tap</h3><p>Your logo, your colors, an itemized manifest and move-cost breakdown — exported as a clean PDF to hand over or email on the spot.</p></div>
+      <div class="feat"><div class="ic">🗂️</div><h3>Jobs &amp; pipeline</h3><p>Every client is a job — lead, scheduled, in progress, completed — each with its own inventory. Nothing gets lost or re-keyed.</p></div>
+      <div class="feat"><div class="ic">👥</div><h3>Your whole team</h3><p>Admins, estimators, and crew under one company, added in seconds with a 6-character join code. Everyone works off the same data.</p></div>
+      <div class="feat"><div class="ic">🎨</div><h3>White-label branding</h3><p>Put your company front and center. Set your name, brand color, and logo so every estimate looks unmistakably yours.</p></div>
+      <div class="feat"><div class="ic">📱</div><h3>Works on any phone</h3><p>No hardware, no laptops in the truck. If your estimator has a phone, they can survey a home and send a quote.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="strip">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps from driveway to signed estimate</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><h3>Snap each room</h3><p>Walk the home and photograph the rooms — or dictate what's there. Takes minutes, not a clipboard and a half-hour.</p></div>
+      <div class="step"><h3>AI builds the inventory</h3><p>Items, categories, and cube counts populate automatically. Your estimator edits anything in seconds instead of writing it all by hand.</p></div>
+      <div class="step"><h3>Send the branded quote</h3><p>One tap generates a branded PDF with the manifest and move cost. Hand it over before you leave — and win the job.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Simple pricing</span>
+      <h2>Plans that fit your crew</h2>
+      <p>Start with a 14-day free trial — no card required. One extra booked move pays for the year.</p>
+    </div>
+
+    <div class="toggle">
+      <button id="t-month" class="on" onclick="setInterval_('month')">Monthly</button>
+      <button id="t-year" onclick="setInterval_('year')">Annual — 2 months free</button>
+    </div>
+
+    <div class="plans">
+      <div class="plan">
+        <h3>Solo</h3>
+        <div class="blurb">Owner-operators with one truck.</div>
+        <div class="price"><span class="amt" data-m="$49" data-y="$490">$49</span><span class="per" data-per="/ mo">/ mo</span></div>
+        <div class="save" data-save="Billed $490/yr"></div>
+        <ul>
+          <li><span class="ck">✓</span> Up to 30 jobs / month</li>
+          <li><span class="ck">✓</span> 2 team members</li>
+          <li><span class="ck">✓</span> AI room scan, describe &amp; receipt capture</li>
+          <li><span class="ck">✓</span> Branded quote &amp; estimate PDF</li>
+        </ul>
+        <a href="mailto:sales@homeiqmovers.com?subject=Start%20Solo%20trial" class="btn">Start free trial</a>
+      </div>
+
+      <div class="plan pop">
+        <span class="tag">MOST POPULAR</span>
+        <h3>Crew</h3>
+        <div class="blurb">Growing movers, 2–5 trucks.</div>
+        <div class="price"><span class="amt" data-m="$99" data-y="$990">$99</span><span class="per" data-per="/ mo">/ mo</span></div>
+        <div class="save" data-save="Billed $990/yr"></div>
+        <ul>
+          <li><span class="ck">✓</span> Unlimited jobs</li>
+          <li><span class="ck">✓</span> Up to 5 team members</li>
+          <li><span class="ck">✓</span> All AI capture</li>
+          <li><span class="ck">✓</span> White-label branding (logo &amp; color)</li>
+          <li><span class="ck">✓</span> Priority email support</li>
+        </ul>
+        <a href="mailto:sales@homeiqmovers.com?subject=Start%20Crew%20trial" class="btn btn-primary">Start free trial</a>
+      </div>
+
+      <div class="plan">
+        <h3>Business</h3>
+        <div class="blurb">Regional &amp; multi-location operations.</div>
+        <div class="price"><span class="amt" data-m="$249" data-y="$2490">$249</span><span class="per" data-per="/ mo">/ mo</span></div>
+        <div class="save" data-save="Billed $2,490/yr"></div>
+        <ul>
+          <li><span class="ck">✓</span> Everything in Crew</li>
+          <li><span class="ck">✓</span> Unlimited team members</li>
+          <li><span class="ck">✓</span> Multi-location ready</li>
+          <li><span class="ck">✓</span> Priority support</li>
+        </ul>
+        <a href="mailto:sales@homeiqmovers.com?subject=Business%20plan%20inquiry" class="btn">Talk to sales</a>
+      </div>
+    </div>
+    <p class="price-foot">Prices in USD. Billed securely via Stripe. Questions? <a href="mailto:sales@homeiqmovers.com" class="gold">sales@homeiqmovers.com</a></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="band">
+      <h2>See it quote a real room — in 10 minutes</h2>
+      <p>Book a quick demo and we'll survey a room live, then send you a branded estimate. If it doesn't save your crew time, no hard feelings.</p>
+      <div class="hero-cta" style="justify-content:center">
+        <a href="mailto:sales@homeiqmovers.com?subject=HomeIQ%20for%20Movers%20demo" class="btn btn-primary">Book a live demo →</a>
+        <a href="#pricing" class="btn btn-ghost">Start free trial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div class="brand"><img src="icon.png" alt="" class="mark" style="width:32px;height:32px" /><span style="font-size:15px">HomeIQ for Movers</span></div>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:sales@homeiqmovers.com">Contact sales</a>
+      <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms of Use</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+    <div class="cr">© 2026 HomeIQ for Movers</div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  var mb = document.getElementById('menubtn'), nl = document.getElementById('navlinks');
+  mb.addEventListener('click', function () { nl.classList.toggle('open'); });
+  nl.addEventListener('click', function (e) { if (e.target.tagName === 'A') nl.classList.remove('open'); });
+
+  // Monthly / annual pricing toggle
+  function setInterval_(mode) {
+    var yr = mode === 'year';
+    document.getElementById('t-month').classList.toggle('on', !yr);
+    document.getElementById('t-year').classList.toggle('on', yr);
+    document.querySelectorAll('.plan .amt').forEach(function (el) {
+      el.textContent = yr ? el.dataset.y : el.dataset.m;
+    });
+    document.querySelectorAll('.plan .per').forEach(function (el) {
+      el.textContent = yr ? '/ yr' : '/ mo';
+    });
+    document.querySelectorAll('.plan .save').forEach(function (el) {
+      el.textContent = yr ? el.dataset.save : '';
+    });
+  }
+</script>
+</body>
+</html>
