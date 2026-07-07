@@ -12,6 +12,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- Calendly popup widget -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <style>
   :root {
     --bg: #080f1a;
@@ -204,7 +207,7 @@
       <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
       <a href="mailto:sales@homeiqmovers.com">Contact</a>
-      <a href="#pricing" class="btn btn-primary nav-cta">Start free trial</a>
+      <a data-calendly class="btn btn-primary nav-cta">Start free trial</a>
     </div>
     <button class="menu-btn" id="menubtn" aria-label="Menu">☰</button>
   </div>
@@ -218,8 +221,8 @@
       <h1>Win more moves.<br /><em>Quote in minutes,</em> not hours.</h1>
       <p class="sub">Your estimator walks the home, photographs each room, and AI builds the itemized inventory and a <b style="color:var(--text)">branded quote PDF</b> — before they leave the driveway.</p>
       <div class="hero-cta">
-        <a href="#pricing" class="btn btn-primary">Start your free trial →</a>
-        <a href="mailto:sales@homeiqmovers.com?subject=HomeIQ%20for%20Movers%20demo" class="btn btn-ghost">Book a live demo</a>
+        <a data-calendly class="btn btn-primary">Start your free trial →</a>
+        <a data-calendly class="btn btn-ghost">Book a live demo</a>
       </div>
       <p class="hero-note"><b>14-day free trial.</b> No credit card. Set up the same day.</p>
     </div>
@@ -307,7 +310,7 @@
           <li><span class="ck">✓</span> AI room scan, describe &amp; receipt capture</li>
           <li><span class="ck">✓</span> Branded quote &amp; estimate PDF</li>
         </ul>
-        <a href="mailto:sales@homeiqmovers.com?subject=Start%20Solo%20trial" class="btn">Start free trial</a>
+        <a data-calendly class="btn">Start free trial</a>
       </div>
 
       <div class="plan pop">
@@ -323,7 +326,7 @@
           <li><span class="ck">✓</span> White-label branding (logo &amp; color)</li>
           <li><span class="ck">✓</span> Priority email support</li>
         </ul>
-        <a href="mailto:sales@homeiqmovers.com?subject=Start%20Crew%20trial" class="btn btn-primary">Start free trial</a>
+        <a data-calendly class="btn btn-primary">Start free trial</a>
       </div>
 
       <div class="plan">
@@ -337,7 +340,7 @@
           <li><span class="ck">✓</span> Multi-location ready</li>
           <li><span class="ck">✓</span> Priority support</li>
         </ul>
-        <a href="mailto:sales@homeiqmovers.com?subject=Business%20plan%20inquiry" class="btn">Talk to sales</a>
+        <a data-calendly class="btn">Talk to sales</a>
       </div>
     </div>
     <p class="price-foot">Prices in USD. Billed securely via Stripe. Questions? <a href="mailto:sales@homeiqmovers.com" class="gold">sales@homeiqmovers.com</a></p>
@@ -350,8 +353,8 @@
       <h2>See it quote a real room — in 10 minutes</h2>
       <p>Book a quick demo and we'll survey a room live, then send you a branded estimate. If it doesn't save your crew time, no hard feelings.</p>
       <div class="hero-cta" style="justify-content:center">
-        <a href="mailto:sales@homeiqmovers.com?subject=HomeIQ%20for%20Movers%20demo" class="btn btn-primary">Book a live demo →</a>
-        <a href="#pricing" class="btn btn-ghost">Start free trial</a>
+        <a data-calendly class="btn btn-primary">Book a live demo →</a>
+        <a data-calendly class="btn btn-ghost">Start free trial</a>
       </div>
     </div>
   </div>
@@ -372,6 +375,34 @@
 </footer>
 
 <script>
+  // ─────────────────────────────────────────────────────────────
+  // Booking link — change ONLY this line to your Calendly URL.
+  // e.g. "https://calendly.com/your-name/30min"
+  var CALENDLY_URL = "https://calendly.com/REPLACE-ME/demo";
+  // ─────────────────────────────────────────────────────────────
+
+  // Every [data-calendly] button opens the Calendly popup. Until CALENDLY_URL
+  // is filled in, buttons fall back to email so they always do something; once
+  // a real URL is set they open Calendly (popup, or a new tab if the widget
+  // script is blocked).
+  var CALENDLY_READY = CALENDLY_URL.indexOf('REPLACE-ME') === -1;
+  var FALLBACK_HREF = CALENDLY_READY
+    ? CALENDLY_URL
+    : 'mailto:sales@homeiqmovers.com?subject=HomeIQ%20for%20Movers%20demo';
+  document.querySelectorAll('[data-calendly]').forEach(function (a) {
+    a.setAttribute('href', FALLBACK_HREF);
+    if (CALENDLY_READY) { a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener'); }
+  });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-calendly]');
+    if (!a) return;
+    if (window.Calendly && CALENDLY_READY) {
+      e.preventDefault();
+      window.Calendly.initPopupWidget({ url: CALENDLY_URL });
+    }
+    // else: fall through to the href (Calendly new-tab, or email) fallback.
+  });
+
   // Mobile menu
   var mb = document.getElementById('menubtn'), nl = document.getElementById('navlinks');
   mb.addEventListener('click', function () { nl.classList.toggle('open'); });
